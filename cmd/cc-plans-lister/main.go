@@ -35,7 +35,7 @@ Authentication is required via the CLEVER_API_TOKEN environment variable.`,
 func init() {
 	rootCmd.Flags().StringVarP(&outputFormat, "format", "f", "markdown", "Output format (markdown, txt, csv, pdf)")
 	rootCmd.Flags().StringVarP(&outputFile, "output", "o", "", "Output file (default: stdout)")
-	
+
 	rootCmd.AddCommand(versionCmd)
 }
 
@@ -101,7 +101,7 @@ func runList(cmd *cobra.Command, args []string) error {
 
 	// Success message (only if writing to file)
 	if outputFile != "" {
-		fmt.Fprintf(os.Stderr, "Successfully generated %s with %d addon providers and %d application types\n", 
+		fmt.Fprintf(os.Stderr, "Successfully generated %s with %d addon providers and %d application types\n",
 			outputFile, len(providers), len(instances))
 	}
 

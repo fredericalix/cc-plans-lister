@@ -28,14 +28,14 @@ func TestAddonProviders() []clevercloud.AddonProvider {
 func TestProductInstances() []clevercloud.ProductInstance {
 	return []clevercloud.ProductInstance{
 		{
-			Type:        "node",
-			Version:     "20",
-			Name:        "Node.js",
-			Description: "Node.js runtime",
-			Enabled:     true,
+			Type:         "node",
+			Version:      "20",
+			Name:         "Node.js",
+			Description:  "Node.js runtime",
+			Enabled:      true,
 			MaxInstances: 20,
-			Tags:        []string{"runtime", "javascript"},
-			Deployments: []string{"git", "docker"},
+			Tags:         []string{"runtime", "javascript"},
+			Deployments:  []string{"git", "docker"},
 			Flavors: []clevercloud.Flavor{
 				{
 					Name:            "nano",
@@ -71,14 +71,14 @@ func TestProductInstances() []clevercloud.ProductInstance {
 			},
 		},
 		{
-			Type:        "python",
-			Version:     "3.11",
-			Name:        "Python",
-			Description: "Python runtime",
-			Enabled:     true,
+			Type:         "python",
+			Version:      "3.11",
+			Name:         "Python",
+			Description:  "Python runtime",
+			Enabled:      true,
 			MaxInstances: 10,
-			Tags:        []string{"runtime", "python"},
-			Deployments: []string{"git"},
+			Tags:         []string{"runtime", "python"},
+			Deployments:  []string{"git"},
 			Flavors: []clevercloud.Flavor{
 				{
 					Name:            "small",

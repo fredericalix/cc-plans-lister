@@ -22,14 +22,18 @@ A command-line tool that fetches and documents all available addon providers and
 ```bash
 git clone <repository-url>
 cd cc-plans-lister
-go mod download
-go build -o bin/cc-plans-lister cmd/cc-plans-lister/main.go
+make deps    # Download and install dependencies
+make build   # Build the application
 ```
 
-### Install dependencies
+### Quick start
 
 ```bash
-go mod tidy
+# Build, test, and prepare for development
+make all     # Runs: format, vet, test, build
+
+# Or use the development workflow
+make dev     # Same as 'make all' with success message
 ```
 
 ## Configuration
@@ -140,35 +144,42 @@ cc-plans-lister/
 
 ```bash
 # Build for current platform
-go build -o bin/cc-plans-lister cmd/cc-plans-lister/main.go
+make build
 
-# Build for multiple platforms
-GOOS=linux GOARCH=amd64 go build -o bin/cc-plans-lister-linux-amd64 cmd/cc-plans-lister/main.go
-GOOS=darwin GOARCH=amd64 go build -o bin/cc-plans-lister-darwin-amd64 cmd/cc-plans-lister/main.go
-GOOS=windows GOARCH=amd64 go build -o bin/cc-plans-lister-windows-amd64.exe cmd/cc-plans-lister/main.go
+# Build for multiple platforms (Linux, macOS Intel/ARM, Windows)
+make build-all
+
+# Clean build artifacts
+make clean
 ```
 
 ### Running tests
 
 ```bash
 # Run all tests
-go test ./...
+make test
 
-# Run tests with coverage
-go test -cover ./...
+# Run tests with coverage report (generates coverage.html)
+make coverage
 
 # Run tests with verbose output
 go test -v ./...
 ```
 
-### Code formatting
+### Code quality
 
 ```bash
-# Format all Go files
-go fmt ./...
+# Format code
+make fmt
 
-# Run linter (if installed)
-golangci-lint run
+# Run static analysis
+make vet
+
+# Complete development workflow (format + vet + test + build)
+make dev
+
+# View all available commands
+make help
 ```
 
 ## Dependencies
@@ -232,17 +243,15 @@ Solution: Use one of the supported formats: `markdown`, `txt`, `csv`, or `pdf`.
 # Set your API token
 export CLEVER_API_TOKEN="your_token_here"
 
-# Generate markdown report
+# Build and run with Makefile
+make build
 ./bin/cc-plans-lister --format=markdown --output=services.md
-
-# Generate text report
 ./bin/cc-plans-lister --format=txt --output=services.txt
-
-# Generate CSV export
 ./bin/cc-plans-lister --format=csv --output=services.csv
-
-# Generate PDF report
 ./bin/cc-plans-lister --format=pdf --output=services.pdf
+
+# Or use the samples target to generate all formats at once
+make samples  # Generates sample.{md,txt,csv,pdf}
 ```
 
 ### Automation example
@@ -254,11 +263,19 @@ export CLEVER_API_TOKEN="your_token_here"
 DATE=$(date +%Y%m%d)
 OUTPUT_DIR="reports/$DATE"
 
+# Build the application
+make build
+
+# Create output directory
 mkdir -p "$OUTPUT_DIR"
 
+# Generate reports
 ./bin/cc-plans-lister --format=markdown --output="$OUTPUT_DIR/services.md"
-./bin/cc-plans-lister --format=csv --output="$OUTPUT_DIR/services.csv"
+./bin/cc-plans-lister --format=csv --output="$OUTPUT_DIR/services.csv" 
 ./bin/cc-plans-lister --format=pdf --output="$OUTPUT_DIR/services.pdf"
 
 echo "Reports generated in $OUTPUT_DIR"
+
+# Optional: Clean up previous day's sample files
+make clean
 ```

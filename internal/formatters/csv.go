@@ -23,7 +23,7 @@ func (f *CSVFormatter) Format(providers []clevercloud.AddonProvider, instances [
 	if err != nil {
 		return err
 	}
-	
+
 	err = csvWriter.Write([]string{"# Automatically generated via Clever Cloud API"})
 	if err != nil {
 		return err

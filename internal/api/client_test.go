@@ -9,7 +9,7 @@ import (
 func TestNewClient(t *testing.T) {
 	token := "test_token_123"
 	client := NewClient(token)
-	
+
 	require.NotNil(t, client)
 	require.NotNil(t, client.cc)
 }

@@ -16,19 +16,19 @@ type AddonPlan struct {
 
 // ProductInstance represents an application type with its flavors (plans)
 type ProductInstance struct {
-	Type          string        `json:"type"`
-	Version       string        `json:"version"`
-	Name          string        `json:"name"`
-	Variant       Variant       `json:"variant"`
-	Description   string        `json:"description"`
-	Enabled       bool          `json:"enabled"`
-	ComingSoon    bool          `json:"comingSoon"`
-	MaxInstances  int           `json:"maxInstances"`
-	Tags          []string      `json:"tags"`
-	Deployments   []string      `json:"deployments"`
-	Flavors       []Flavor      `json:"flavors"`
-	DefaultFlavor Flavor        `json:"defaultFlavor"`
-	BuildFlavor   Flavor        `json:"buildFlavor"`
+	Type          string   `json:"type"`
+	Version       string   `json:"version"`
+	Name          string   `json:"name"`
+	Variant       Variant  `json:"variant"`
+	Description   string   `json:"description"`
+	Enabled       bool     `json:"enabled"`
+	ComingSoon    bool     `json:"comingSoon"`
+	MaxInstances  int      `json:"maxInstances"`
+	Tags          []string `json:"tags"`
+	Deployments   []string `json:"deployments"`
+	Flavors       []Flavor `json:"flavors"`
+	DefaultFlavor Flavor   `json:"defaultFlavor"`
+	BuildFlavor   Flavor   `json:"buildFlavor"`
 }
 
 // Variant represents application variant information
