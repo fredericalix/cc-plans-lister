@@ -91,8 +91,8 @@ func (f *TextFormatter) Format(providers []clevercloud.AddonProvider, instances 
 	builder.WriteString("============================\n\n")
 
 	w = tabwriter.NewWriter(&builder, 0, 0, 2, ' ', 0)
-	fmt.Fprintln(w, "Type\tName\tFlavor\tMemory\tCPU\tPrice\tAvailable\tMicroservice\tML")
-	fmt.Fprintln(w, "----\t----\t------\t------\t---\t-----\t---------\t------------\t--")
+	fmt.Fprintln(w, "Type\tName\tFlavor\tFlavor Slug\tMemory\tCPU\tPrice\tAvailable\tMicroservice\tML")
+	fmt.Fprintln(w, "----\t----\t------\t-----------\t------\t---\t-----\t---------\t------------\t--")
 
 	for _, instance := range instances {
 		if !instance.Enabled {
@@ -100,7 +100,7 @@ func (f *TextFormatter) Format(providers []clevercloud.AddonProvider, instances 
 		}
 
 		if len(instance.Flavors) == 0 {
-			fmt.Fprintf(w, "%s\t%s\t-\t-\t-\t-\t-\t-\t-\n", instance.Type, instance.Name)
+			fmt.Fprintf(w, "%s\t%s\t-\t-\t-\t-\t-\t-\t-\t-\n", instance.Type, instance.Name)
 			continue
 		}
 
@@ -134,8 +134,18 @@ func (f *TextFormatter) Format(providers []clevercloud.AddonProvider, instances 
 				mlStr = "Yes"
 			}
 
-			fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%d\t%.2f€\t%s\t%s\t%s\n",
-				typeCell, nameCell, flavor.Name, flavor.Memory.Formatted, flavor.Cpus, flavor.Price, availableStr, microserviceStr, mlStr)
+			// Use flavor slug if available, otherwise use PriceID or name as fallback
+			flavorSlug := flavor.Slug
+			if flavorSlug == "" {
+				if flavor.PriceID != "" {
+					flavorSlug = flavor.PriceID
+				} else {
+					flavorSlug = flavor.Name
+				}
+			}
+
+			fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%d\t%.2f€\t%s\t%s\t%s\n",
+				typeCell, nameCell, flavor.Name, flavorSlug, flavor.Memory.Formatted, flavor.Cpus, flavor.Price, availableStr, microserviceStr, mlStr)
 		}
 	}
 	w.Flush()

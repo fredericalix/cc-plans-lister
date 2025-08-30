@@ -50,6 +50,7 @@ type Memory struct {
 // Flavor represents a specific flavor/plan for an application type
 type Flavor struct {
 	Name            string  `json:"name"`
+	Slug            string  `json:"slug"`            // Add slug field to match addon plans
 	Mem             int     `json:"mem"`
 	Cpus            int     `json:"cpus"`
 	Gpus            int     `json:"gpus"`

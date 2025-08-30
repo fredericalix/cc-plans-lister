@@ -97,7 +97,7 @@ func (f *CSVFormatter) Format(providers []clevercloud.AddonProvider, instances [
 	// Application instances header
 	err = csvWriter.Write([]string{
 		"Type", "Instance_Type", "Instance_Name", "Version", "Description", "Enabled", "Max_Instances",
-		"Tags", "Deployments", "Flavor_Name", "Memory_Formatted", "Memory_Value", "Memory_Unit",
+		"Tags", "Deployments", "Flavor_Name", "Flavor_Slug", "Memory_Formatted", "Memory_Value", "Memory_Unit",
 		"CPUs", "GPUs", "Price", "Available", "Microservice", "MachineLearning", "IsDefault",
 	})
 	if err != nil {
@@ -117,7 +117,7 @@ func (f *CSVFormatter) Format(providers []clevercloud.AddonProvider, instances [
 				strconv.Itoa(instance.MaxInstances),
 				strings.Join(instance.Tags, "|"),
 				strings.Join(instance.Deployments, "|"),
-				"", "", "", "", "", "", "", "", "", "", "",
+				"", "", "", "", "", "", "", "", "", "", "", "",
 			})
 			if err != nil {
 				return err
@@ -135,6 +135,16 @@ func (f *CSVFormatter) Format(providers []clevercloud.AddonProvider, instances [
 		for _, flavor := range flavors {
 			isDefault := flavor.Name == instance.DefaultFlavor.Name
 
+			// Use flavor slug if available, otherwise use PriceID or name as fallback
+			flavorSlug := flavor.Slug
+			if flavorSlug == "" {
+				if flavor.PriceID != "" {
+					flavorSlug = flavor.PriceID
+				} else {
+					flavorSlug = flavor.Name
+				}
+			}
+
 			err = csvWriter.Write([]string{
 				"application",
 				instance.Type,
@@ -146,6 +156,7 @@ func (f *CSVFormatter) Format(providers []clevercloud.AddonProvider, instances [
 				strings.Join(instance.Tags, "|"),
 				strings.Join(instance.Deployments, "|"),
 				flavor.Name,
+				flavorSlug,
 				flavor.Memory.Formatted,
 				strconv.Itoa(flavor.Memory.Value),
 				flavor.Memory.Unit,

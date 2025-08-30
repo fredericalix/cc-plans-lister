@@ -78,8 +78,8 @@ func (f *MarkdownFormatter) Format(providers []clevercloud.AddonProvider, instan
 
 	// Detailed application flavors table
 	builder.WriteString("\n## Detailed Application Flavors\n\n")
-	builder.WriteString("| Type | Name | Flavor | Memory | CPU | Price | Available | Microservice | ML |\n")
-	builder.WriteString("|------|------|--------|--------|-----|-------|-----------|-------------|----|\n")
+	builder.WriteString("| Type | Name | Flavor | Flavor Slug | Memory | CPU | Price | Available | Microservice | ML |\n")
+	builder.WriteString("|------|------|--------|-------------|--------|-----|-------|-----------|-------------|----|\n")
 
 	for _, instance := range instances {
 		if !instance.Enabled {
@@ -87,7 +87,7 @@ func (f *MarkdownFormatter) Format(providers []clevercloud.AddonProvider, instan
 		}
 
 		if len(instance.Flavors) == 0 {
-			builder.WriteString(fmt.Sprintf("| `%s` | %s | - | - | - | - | - | - | - |\n",
+			builder.WriteString(fmt.Sprintf("| `%s` | %s | - | - | - | - | - | - | - | - |\n",
 				instance.Type, instance.Name))
 			continue
 		}
@@ -122,8 +122,18 @@ func (f *MarkdownFormatter) Format(providers []clevercloud.AddonProvider, instan
 				mlStr = "Yes"
 			}
 
-			builder.WriteString(fmt.Sprintf("| %s | %s | `%s` | %s | %d | %.2f€ | %s | %s | %s |\n",
-				typeCell, nameCell, flavor.Name, flavor.Memory.Formatted, flavor.Cpus, flavor.Price, availableStr, microserviceStr, mlStr))
+			// Use flavor slug if available, otherwise use PriceID or name as fallback
+			flavorSlug := flavor.Slug
+			if flavorSlug == "" {
+				if flavor.PriceID != "" {
+					flavorSlug = flavor.PriceID
+				} else {
+					flavorSlug = flavor.Name
+				}
+			}
+			
+			builder.WriteString(fmt.Sprintf("| %s | %s | `%s` | `%s` | %s | %d | %.2f€ | %s | %s | %s |\n",
+				typeCell, nameCell, flavor.Name, flavorSlug, flavor.Memory.Formatted, flavor.Cpus, flavor.Price, availableStr, microserviceStr, mlStr))
 		}
 	}
 

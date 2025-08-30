@@ -39,12 +39,14 @@ func TestProductInstances() []clevercloud.ProductInstance {
 			Flavors: []clevercloud.Flavor{
 				{
 					Name:            "nano",
+					Slug:            "nano",
 					Mem:             256,
 					Cpus:            1,
 					Price:           0.02,
 					Available:       true,
 					Microservice:    true,
 					MachineLearning: false,
+					PriceID:         "price_nano_123",
 					Memory: clevercloud.Memory{
 						Unit:      "MB",
 						Value:     256,
@@ -53,12 +55,14 @@ func TestProductInstances() []clevercloud.ProductInstance {
 				},
 				{
 					Name:            "small",
+					Slug:            "small",
 					Mem:             512,
 					Cpus:            1,
 					Price:           0.04,
 					Available:       true,
 					Microservice:    false,
 					MachineLearning: false,
+					PriceID:         "price_small_456",
 					Memory: clevercloud.Memory{
 						Unit:      "MB",
 						Value:     512,
@@ -82,12 +86,14 @@ func TestProductInstances() []clevercloud.ProductInstance {
 			Flavors: []clevercloud.Flavor{
 				{
 					Name:            "small",
+					Slug:            "small",
 					Mem:             512,
 					Cpus:            1,
 					Price:           0.04,
 					Available:       true,
 					Microservice:    false,
 					MachineLearning: true,
+					PriceID:         "price_py_small_789",
 					Memory: clevercloud.Memory{
 						Unit:      "MB",
 						Value:     512,
@@ -97,6 +103,7 @@ func TestProductInstances() []clevercloud.ProductInstance {
 			},
 			DefaultFlavor: clevercloud.Flavor{
 				Name: "small",
+				Slug: "small",
 			},
 		},
 	}

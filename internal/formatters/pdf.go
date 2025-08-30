@@ -162,6 +162,16 @@ func (f *PDFFormatter) Format(providers []clevercloud.AddonProvider, instances [
 				defaultMarker = " (default)"
 			}
 
+			// Use flavor slug if available, otherwise use PriceID or name as fallback
+			flavorSlug := flavor.Slug
+			if flavorSlug == "" {
+				if flavor.PriceID != "" {
+					flavorSlug = flavor.PriceID
+				} else {
+					flavorSlug = flavor.Name
+				}
+			}
+
 			availableStr := "Available"
 			if !flavor.Available {
 				availableStr = "Unavailable"
@@ -180,8 +190,8 @@ func (f *PDFFormatter) Format(providers []clevercloud.AddonProvider, instances [
 				featuresStr = fmt.Sprintf(" [%s]", strings.Join(features, ", "))
 			}
 
-			text := fmt.Sprintf("  • %s%s - %s, %d CPU, %.2f€/h - %s%s",
-				flavor.Name, defaultMarker, flavor.Memory.Formatted, flavor.Cpus,
+			text := fmt.Sprintf("  • %s (%s)%s - %s, %d CPU, %.2f€/h - %s%s",
+				flavor.Name, flavorSlug, defaultMarker, flavor.Memory.Formatted, flavor.Cpus,
 				flavor.Price, availableStr, featuresStr)
 			pdf.Cell(190, 6, truncateText(text, 90))
 			pdf.Ln(6)
